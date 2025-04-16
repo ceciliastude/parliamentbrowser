@@ -11,6 +11,7 @@ import { ListScreen } from "./Components/ListScreen";
 import { DetailsScreen } from "./Components/DetailsScreen";
 import { Layout } from "./Styles/Layout";
 
+//Screen is used for managing several views in an app. The homescreen shows when launching the app
 function HomeScreen() {
   const navigation = useNavigation();
   return (
@@ -33,6 +34,7 @@ function HomeScreen() {
   );
 }
 
+//Screen manager
 const RootStack = createNativeStackNavigator({
   initialRouteName: "Home",
   screenOptions: {
@@ -50,7 +52,7 @@ const RootStack = createNativeStackNavigator({
 const Navigation = createStaticNavigation(RootStack);
 
 export default function App() {
-  return <Navigation />;
+  return <Navigation />; //Function that will execute navigation between screens
 }
 
 const styles = StyleSheet.create({
