@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Pressable } from "react-native";
+import { Pressable, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import {
   View,
@@ -12,12 +12,16 @@ import {
 } from "react-native";
 import { Avatar, ListItem } from "react-native-elements";
 import { memberEntry } from "../Styles/memberEntry";
+import { Layout } from "../Styles/Layout";
+import RNPickerSelect from "react-native-picker-select";
 
 export const ListScreen = () => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [query, setQuery] = useState("");
   const navigation = useNavigation();
+  const [selectedOrg, setSelectedOrg] = useState("all");
+  const [orgs, setOrgs] = useState([]);
 
   const getPersons = async () => {
     try {
@@ -38,7 +42,7 @@ export const ListScreen = () => {
   const getOrganization = async () => {
     try {
       const listResponse = await fetch(
-        "https://api.lagtinget.ax/api/organization",
+        "https://api.lagtinget.ax/api/organizations",
         {
           headers: {
             Accept: "application/json",
@@ -46,7 +50,7 @@ export const ListScreen = () => {
         }
       );
       const json = await listResponse.json();
-      setData(json);
+      setOrgs(json);
     } catch (error) {
       console.error(error);
     } finally {
@@ -56,11 +60,16 @@ export const ListScreen = () => {
 
   useEffect(() => {
     getPersons();
+    getOrganization();
   }, []);
 
-  const filteredData = data.filter((item) =>
-    item.name?.toLowerCase().includes(query.toLowerCase())
-  );
+  const filteredData = data.filter((item) => {
+    const nameMatch = item.name?.toLowerCase().includes(query.toLowerCase());
+    const orgMatch =
+      selectedOrg === "all" || item.organization?.id === selectedOrg;
+    const isActive = Number(item.state) === 1;
+    return nameMatch && orgMatch && isActive;
+  });
 
   const sortedData = filteredData.sort((a, b) => {
     if (a.last_name.toLowerCase() < b.last_name.toLowerCase()) return -1;
@@ -70,13 +79,18 @@ export const ListScreen = () => {
 
   return (
     <View style={styles.backGround}>
+      <Text style={[Layout.h2, { marginTop: 20, textAlign: "center" }]}>
+        List of parliament members
+      </Text>
+
       <View style={styles.searchBar}>
         <TextInput
-          placeholder="Enter name"
+          placeholder="Search for a member"
           value={query}
           onChangeText={(text) => setQuery(text)}
         />
       </View>
+
       <View style={memberEntry.listContainer}>
         {isLoading ? (
           <ActivityIndicator />

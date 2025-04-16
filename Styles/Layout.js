@@ -3,22 +3,24 @@ import { StyleSheet } from "react-native";
 export const Layout = StyleSheet.create({
   container: {
     marginHorizontal: 15,
-    marginTop: 100,
-    marginBottom: 100,
-    backgroundColor: "blue",
+    marginVertical: 50,
+    backgroundColor: "white",
     position: "relative",
   },
   h1: {
-    fontSize: 40,
+    fontSize: 35,
     fontWeight: "bold",
+    marginLeft: 10,
   },
   h2: {
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: "bold",
+    marginLeft: 10,
   },
   h3: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: "bold",
+    marginLeft: 10,
   },
   title: {
     fontSize: 15,
