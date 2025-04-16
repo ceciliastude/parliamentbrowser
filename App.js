@@ -7,6 +7,7 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Button } from "@react-navigation/elements";
+import { ListScreen } from "./Components/ListScreen";
 import { DetailsScreen } from "./Components/DetailsScreen";
 
 function HomeScreen() {
@@ -14,8 +15,8 @@ function HomeScreen() {
   return (
     <View style={styles.container}>
       <Text>Home Screen</Text>
-      <Button onPress={() => navigation.navigate("Details")}>
-        Go to Details
+      <Button onPress={() => navigation.navigate("Members")}>
+        Go to Members
       </Button>
       <StatusBar style="auto" />
     </View>
@@ -31,6 +32,7 @@ const RootStack = createNativeStackNavigator({
     Home: {
       screen: HomeScreen,
     },
+    Members: ListScreen,
     Details: DetailsScreen,
   },
 });
